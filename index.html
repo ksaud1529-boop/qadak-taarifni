@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#151a2e"><title>قدّك تعرفني؟</title>
+<style>
+:root{--bg:#101426;--panel:#1a2038;--panel2:#222a46;--line:#343d60;--text:#f7f7ff;--muted:#aeb6d3;--pink:#ff83ad;--blue:#8eb9ff;--gold:#ffd77b;--green:#83e0ba}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 0%,#28345a 0,transparent 32%),var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif;min-height:100vh}
+button,input,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:14px;padding:13px 17px;font-weight:800;background:linear-gradient(135deg,var(--pink),#ffb2c8);color:#291525}button.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--line)}button.blue{background:linear-gradient(135deg,#78aaff,#b3d1ff);color:#111b35}button:disabled{opacity:.45;cursor:not-allowed}
+.wrap{width:min(760px,100%);margin:auto;padding:22px 16px 48px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}.brand{font-size:14px;color:var(--muted)}.brand strong{display:block;font-size:26px;color:var(--text)}.pill{font-size:12px;color:var(--gold);border:1px solid #665b3d;border-radius:99px;padding:7px 10px}
+.card{background:linear-gradient(160deg,rgba(34,42,70,.98),rgba(25,31,53,.98));border:1px solid var(--line);border-radius:23px;padding:20px;margin:13px 0;box-shadow:0 14px 38px #05081455}
+h1{font-size:29px;line-height:1.35;margin:0 0 9px}h2{font-size:21px;margin:0 0 9px}p{color:var(--muted);line-height:1.8}.sub{font-size:14px;color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.cat{padding:17px 12px;text-align:right;background:var(--panel2);border:1px solid var(--line);border-radius:17px;color:var(--text);min-height:94px}.cat span{display:block;font-size:26px;margin-bottom:8px}.cat small{color:var(--muted);font-weight:500}
+.field{display:block;margin:13px 0}.field label{display:block;color:var(--muted);font-size:13px;margin-bottom:7px}.field input,.field textarea{width:100%;background:#11182d;border:1px solid var(--line);border-radius:13px;padding:14px;color:var(--text);outline:none}.field textarea{min-height:90px;resize:vertical;line-height:1.7}.row{display:flex;gap:9px;flex-wrap:wrap}.row>*{flex:1}.hidden{display:none!important}.notice{background:#2b2940;border:1px solid #5c5275;border-radius:14px;padding:12px 14px;color:#e7dfff;font-size:13px;line-height:1.7}.status{color:var(--green);font-size:13px}.progress{height:8px;background:#10172b;border-radius:99px;overflow:hidden;margin:12px 0}.progress>i{display:block;height:100%;background:linear-gradient(90deg,var(--pink),var(--blue));width:0}.question{font-size:22px;line-height:1.65;margin:18px 0}.counter{font-size:13px;color:var(--gold)}.between{display:flex;justify-content:space-between;align-items:center;gap:10px}.score{font-size:40px;font-weight:900;color:var(--gold)}.small{font-size:12px;color:var(--muted)}.answerline{border-bottom:1px solid var(--line);padding:12px 0}.answerline strong{display:block;margin-bottom:6px}.good{color:var(--green)}.bad{color:var(--pink)}footer{text-align:center;color:#77809f;font-size:12px;margin-top:25px}@media(max-width:430px){.wrap{padding:17px 13px 36px}.card{padding:17px}.grid{gap:8px}h1{font-size:26px}}
+</style></head>
+<body><div class="wrap">
+<header class="top"><div class="brand"><strong>قدّك تعرفني؟</strong>لعبة شخصين · أربعة تصنيفات</div><span class="pill">نسخة جديدة</span></header>
+<main id="app">
+<section id="home" class="card"><h1>قدّك تعرفني؟ ✨</h1><p>جاوب عن نفسك، وبعدها حاول تتوقع إجابات الشخص الثاني. كل إجابة مطابقة = نقطة.</p><div class="notice">اللعبة تحتاج اتصال إنترنت وإعداد مشروع Supabase حتى تتزامن الغرفة بين جهازين. استخدموا أسماءً مستعارة ولا تكتبون معلومات خاصة.</div><h2 style="margin-top:22px">اختاري التصنيف</h2><button class="secondary" id="openHistory" style="width:100%;margin:0 0 16px">📚 سجل الجولات السابقة</button><div class="grid" id="categories">
+<button class="cat" data-category="حبايب"><span>💗</span><strong>حبايب</strong><small>20 سؤالًا</small></button>
+<button class="cat" data-category="أصدقاء"><span>🫶</span><strong>أصدقاء</strong><small>20 سؤالًا</small></button>
+<button class="cat" data-category="إخوة"><span>🏡</span><strong>إخوة</strong><small>20 سؤالًا</small></button>
+<button class="cat" data-category="عائلة"><span>👨‍👩‍👧‍👦</span><strong>عائلة</strong><small>20 سؤالًا</small></button>
+</div></section>
+<section id="setup" class="card hidden"><div class="between"><h2>إنشاء غرفة</h2><button class="secondary" id="backHome">رجوع</button></div><p id="chosenCategory"></p><div class="field"><label>اسم مستعار للاعب الأول</label><input id="createName" maxlength="18" placeholder="مثلاً: فراشة"></div><button id="createRoom" class="blue" style="width:100%">إنشاء غرفة جديدة</button><hr style="border:0;border-top:1px solid var(--line);margin:22px 0"><h2>أو انضمي إلى غرفة</h2><div class="field"><label>رمز الغرفة</label><input id="joinCode" maxlength="6" placeholder="A7K2Q9" autocapitalize="characters"></div><div class="field"><label>اسم مستعار للاعب الثاني</label><input id="joinName" maxlength="18" placeholder="اسم مستعار"></div><button id="joinRoom" style="width:100%">دخول الغرفة</button></section>
+<section id="lobby" class="card hidden"><div class="between"><h2>غرفتكم جاهزة 🎉</h2><span class="status">● متصل</span></div><p>أرسلي الرمز للشخص الثاني ليدخل من جهازه.</p><div id="roomCode" style="font-size:36px;letter-spacing:7px;text-align:center;color:var(--gold);font-weight:900;padding:14px">------</div><button class="secondary" id="copyCode" style="width:100%">نسخ رمز الغرفة</button><p id="lobbyNames" style="text-align:center;margin-top:16px"></p><div class="notice">بانتظار اللاعب الثاني… ستبدأ اللعبة تلقائيًا بعد انضمامه.</div></section>
+<section id="play" class="card hidden"><div class="between"><span class="counter" id="phaseLabel">الجولة الأولى</span><span class="counter" id="qCounter">1 / 20</span></div><div class="progress"><i id="progressBar"></i></div><div class="between"><span class="pill" id="difficultyLabel">المستوى السهل</span><span class="pill hidden" id="surpriseLabel">🎁 سؤال المفاجأة</span></div><p class="sub" id="playHint"></p><div class="question" id="questionText"></div><div class="field"><label id="answerLabel">إجابتك</label><textarea id="answerInput" maxlength="180" placeholder="اكتبي إجابتك هنا…"></textarea></div><div class="row"><button class="secondary" id="prevBtn">السابق</button><button id="nextBtn">التالي</button></div><p class="small" id="saveStatus"></p></section>
+<section id="waiting" class="card hidden"><h2>خلصتوا هالمرحلة! 🌟</h2><p>ننتظر اللاعب الثاني يكمل… الشاشة تتحدث تلقائيًا.</p><div class="progress"><i style="width:100%"></i></div></section>
+<section id="results" class="card hidden"><h1>النتيجة النهائية 🏆</h1><p id="resultIntro"></p><div class="card" style="text-align:center"><div class="small">نسبة التوافق بينكم</div><div class="score" id="compatibility">0%</div><div class="small">مجموع النقاط من 40</div><div id="totalPoints" style="font-size:24px;font-weight:900;color:var(--gold)">0 / 40</div></div><div class="grid" id="scoreGrid"></div><h2 style="margin-top:22px">الألقاب والإنجازات ✨</h2><div id="awards" class="grid"></div><div class="row" style="margin-top:20px"><button id="replayBtn" class="blue">إعادة اللعب مع نفس الشخص</button><button id="restartBtn" class="secondary">الرئيسية</button></div></section>
+<section id="history" class="card hidden"><div class="between"><h2>سجل الجولات</h2><button class="secondary" id="historyBack">رجوع</button></div><div id="historyList"></div></section>
+
+</main><footer>قدّك تعرفني؟ · لعبة خاصة بين شخصين</footer></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const BANK={
+"حبايب":["وش أكثر شيء يضحكني حتى لو كنت مو رايقة؟","وش المشروب اللي غالبًا أطلبه؟","إذا تضايقت، أفضل أتكلم أو آخذ وقتي؟","وش اللون اللي أحبه أكثر؟","وش أكثر شيء يخليني أبتسم؟","وش المكان اللي أحب أروحه؟","وش نوع الهدايا اللي تفرحني؟","وش أكثر وقت أحب أسولف فيه؟","وش الشيء اللي أخاف أنساه؟","وش الأكلة اللي أختارها غالبًا؟","إذا صار عندي يوم فاضي، وش غالبًا أسوي؟","وش أكثر صفة أحبها في الناس؟","وش الشيء اللي يرفع مزاجي بسرعة؟","أفضل المفاجآت أو التخطيط المسبق؟","وش أكثر تطبيق أستخدمه؟","وش نوع الأفلام أو المسلسلات اللي أحبها؟","إذا سافرت، أفضل البحر أو الجبال؟","وش أكثر شيء أفتخر إني تعلمته؟","وش ذكرى بسيطة تسعدني؟","وش أمنية أتمنى أحققها؟"],
+"أصدقاء":["وش أكثر شيء يضحكني؟","وش الوجبة اللي أختارها غالبًا؟","هل أحب الطلعات أو الجلسات الهادية؟","وش لوني المفضل؟","وش أكثر مادة أو موضوع أحبه؟","إذا طفشت، وش أسوي غالبًا؟","وش أكثر شيء يحمسني؟","هل أحب أصور اللحظات أو أعيشها بدون تصوير؟","وش نوع الألعاب اللي أفضلها؟","وش أكثر كلمة أكررها؟","وش الوقت اللي أكون فيه نشيط؟","هل أحب أخطط أو أمشيها عفوي؟","وش أكثر شيء يزعجني في الصداقة؟","وش المكان اللي أرتاح فيه؟","وش مشروبي المفضل؟","إذا فزت بجائزة، وش أول شيء بسويه؟","وش مهارة ودي أتعلمها؟","هل أفضل الهدايا العملية أو الرمزية؟","وش أكثر ذكرى مضحكة بيننا؟","وش الشيء اللي يخليني صديقًا جيدًا؟"],
+"إخوة":["وش أكلي المفضل؟","وش أكثر شيء يخليني أعصب؟","وش أكثر شيء أضيّعه؟","وش البرنامج اللي أتابعه كثير؟","وش لوني المفضل؟","مين فينا يصحى أول؟","وش أكثر كلمة أقولها في البيت؟","وش الشيء اللي أستعيره منكم؟","وش أكثر شيء يضحكني؟","وش مشروبي المفضل؟","إذا جعت، وش أول شيء أدور عليه؟","وش أكثر شغلة أتهرب منها؟","وش المكان المفضل عندي في البيت؟","وش أكثر لعبة أحبها؟","هل أحب الهدوء أو الإزعاج والضحك؟","وش أكثر شيء أتحمس له؟","وش أكثر عادة عندي؟","إذا زعلت، كيف تعرفون؟","وش أكثر ذكرى عائلية أحبها؟","وش الشيء اللي أتمنى نسويه سوا؟"],
+"عائلة":["وش الأكلة اللي أحبها في الجمعات؟","وش أكثر مناسبة أنتظرها؟","هل أحب القهوة أو الشاي أكثر؟","وش لوني المفضل؟","وش أكثر شيء يضحكني؟","هل أحب السفر أو الجلسات البيتية؟","وش المكان اللي أحب أجلس فيه؟","وش أكثر حلى أحبه؟","وش الوقت اللي أحب أزور فيه الأهل؟","وش أكثر صفة تميزني؟","وش أكثر شيء أساعد فيه بالبيت؟","وش نوع الهدايا اللي تعجبني؟","هل أحب الصور الجماعية؟","وش أكثر ذكرى عائلية أحبها؟","وش الشيء اللي يخليني أستانس في الزيارة؟","وش مشروبي المفضل؟","هل أحب التخطيط للعزائم أو المفاجآت؟","وش أكثر شيء يخليني أضحك؟","وش هواية أحب أمارسها؟","وش أمنية أتمنى تتحقق للعائلة؟"]};
+const $=id=>document.getElementById(id);let sb=null,category="",room=null,token="",player=0,index=0,mode="answers",poll=null,busy=false,draftText=null,draftId="",questionTimer=null,activeQuestionKey="",transitioning=false;
+const labels={"حبايب":"💗","أصدقاء":"🫶","إخوة":"🏡","عائلة":"👨‍👩‍👧‍👦"};
+const SURPRISE={
+ "حبايب":["لو أقدر أحقق لك أمنية واحدة الآن، وش تتوقع تكون؟","وش تفصيلة صغيرة فيك يمكن ما أنتبه لها إلا أنا؟","لو نعيد يومًا جميلًا، أي يوم تختار؟"],
+ "أصدقاء":["لو طلعنا رحلة بدون تخطيط، وش أول شيء بتقترحه؟","وش موقف بيننا للحين يضحكك؟","لو وصفت صداقتنا بكلمة، وش بتكون؟"],
+ "إخوة":["لو بنسوي تحدي سوا، وش تتوقع أختار؟","وش موقف قديم بيننا مستحيل أنساه؟","لو عندنا يوم كامل فاضي، وش نسوي؟"],
+ "عائلة":["وش نشاط تتوقع يجمع العائلة ويونسنا كلنا؟","وش ذكرى عائلية تتوقع إني أحب أرجع لها؟","لو نخطط ليوم عائلي، وش أول اقتراح بيجي ببالي؟"]
+};
+function show(id){if(id!=="play"){clearQuestionTimer();activeQuestionKey=""} ["home","setup","lobby","play","waiting","results","history"].forEach(x=>$(x).classList.toggle("hidden",x!==id))}
+const DEFAULT_SUPABASE_URL="https://adixvaqaluhaplkataop.supabase.co";
+const DEFAULT_SUPABASE_KEY="sb_publishable_-3tTVrdeJ-I4nyI3A4VgwQ_B39GHOCE";
+function config(){if(!DEFAULT_SUPABASE_URL||!DEFAULT_SUPABASE_KEY||!window.supabase)return false;sb=window.supabase.createClient(DEFAULT_SUPABASE_URL,DEFAULT_SUPABASE_KEY);return true}
+async function rpc(n,a){if(!sb&&!config())throw Error("تعذر الاتصال بالخدمة. حاولي تحديث الصفحة.");let {data,error}=await sb.rpc(n,a);if(error)throw error;return data}
+function clean(s){return String(s||"").trim().toLocaleLowerCase("ar").replace(/[أإآ]/g,"ا").replace(/ة/g,"ه").replace(/[ًٌٍَُِّْـ]/g,"").replace(/\s+/g," ")}
+function mine(k){return `p${player}_${k}`}function draftKey(){return `${room?.code||""}:${player}:${mode}:${index}`}function timerKey(){return `qadak_deadline:${draftKey()}`}function done(f){return Object.keys(room[f]||{}).length>=20}
+function surpriseIndex(){let h=0;for(const ch of room.code)h=(h*31+ch.charCodeAt(0))>>>0;return h%20}
+function questionAt(i){return i===surpriseIndex()?SURPRISE[room.category][(room.code.charCodeAt(0)+room.code.charCodeAt(2))%SURPRISE[room.category].length]:BANK[room.category][i]}
+function levelAt(i){return i<7?"السهل · 1–7":i<14?"المتوسط · 8–14":"الصعب · 15–20"}
+function clearQuestionTimer(){if(questionTimer){clearTimeout(questionTimer);questionTimer=null}}
+function startQuestionTimer(){
+ const key=draftKey();
+ if(activeQuestionKey===key)return;
+ clearQuestionTimer();activeQuestionKey=key;transitioning=false;
+ let deadline=Number(localStorage.getItem(timerKey()));
+ if(!deadline||!Number.isFinite(deadline)){deadline=Date.now()+180000;localStorage.setItem(timerKey(),String(deadline))}
+ const remaining=Math.max(0,deadline-Date.now());
+ questionTimer=setTimeout(()=>autoAdvanceOnTimeout(key),remaining);
+}
+async function autoAdvanceOnTimeout(key){
+ if(key!==draftKey()||transitioning)return;
+ transitioning=true;questionTimer=null;
+ const ok=await save(true);
+ if(!ok){transitioning=false;$('saveStatus').textContent='تعذر الحفظ؛ بنحاول مرة ثانية…';questionTimer=setTimeout(()=>autoAdvanceOnTimeout(key),5000);return}
+ localStorage.removeItem(timerKey());
+ await advanceAfterSave();
+}
+document.querySelectorAll("#categories [data-category]").forEach(b=>{b.onclick=()=>{category=b.dataset.category;$("chosenCategory").textContent=`التصنيف: ${category} · 20 سؤالًا`;show("setup")}});
+$("backHome").onclick=()=>show("home");
+$("createRoom").onclick=async()=>{try{if(!config())return alert("تعذر الاتصال بالخدمة. حاولي تحديث الصفحة.");let n=$("createName").value.trim();if(!n)return alert("اكتبي اسمًا مستعارًا.");token=crypto.randomUUID();room=await rpc("create_game_room",{p_name:n,p_category:category,p_token:token});player=1;localStorage.setItem("qadak_room",room.code);localStorage.setItem("qadak_token",token);show("lobby");$("roomCode").textContent=room.code;polling()}catch(e){alert("تعذر إنشاء الغرفة: "+e.message)}};
+$("joinRoom").onclick=async()=>{try{if(!config())return alert("تعذر الاتصال بالخدمة. حاولي تحديث الصفحة.");let n=$("joinName").value.trim(),c=$("joinCode").value.trim().toUpperCase();if(!n||c.length!==6)return alert("اكتبي الاسم المستعار ورمز الغرفة المكوّن من 6 خانات.");token=crypto.randomUUID();room=await rpc("join_game_room",{p_code:c,p_name:n,p_token:token});player=2;localStorage.setItem("qadak_room",room.code);localStorage.setItem("qadak_token",token);polling();sync()}catch(e){alert("تعذر الدخول: "+e.message)}};
+$("copyCode").onclick=async()=>{try{await navigator.clipboard.writeText(room.code);$("copyCode").textContent="تم النسخ ✓"}catch(e){alert("رمز الغرفة: "+room.code)}};
+async function refresh(updateScreen=true){if(!room||busy)return;try{let r=await rpc("get_game_room",{p_code:room.code,p_token:token});if(r){room=r;if(updateScreen)sync()}}catch(e){console.log(e.message)}}
+function polling(){if(poll)clearInterval(poll);refresh();poll=setInterval(refresh,2200)}
+function sync(){if(!room.p2_name){show("lobby");$("roomCode").textContent=room.code;$("lobbyNames").textContent=room.p1_name+" · بانتظار اللاعب الثاني";return}
+ if(!done("p1_answers")||!done("p2_answers")){mode="answers";if(done(mine("answers"))){show("waiting");return}show("play");load()}
+ else if(!done("p1_guesses")||!done("p2_guesses")){if(mode!=="guesses")index=0;mode="guesses";if(done(mine("guesses"))){show("waiting");return}show("play");load()}
+ else results()}
+
+function load(){let f=mine(mode),saved=room[f]||{};$("phaseLabel").textContent=mode==="answers"?"الجولة الأولى · جاوبي عن نفسك":"الجولة الثانية · توقعي إجابات "+(player===1?room.p2_name:room.p1_name);$("playHint").textContent=mode==="answers"?"اكتبي إجابتك أنتِ؛ الطرف الثاني سيحاول تخمينها.":"حاولي تخمين إجابات الطرف الثاني."; $("qCounter").textContent=(index+1)+" / 20";$("progressBar").style.width=((index+1)*5)+"%";$("questionText").textContent=questionAt(index);$("difficultyLabel").textContent="المستوى "+levelAt(index);$("surpriseLabel").classList.toggle("hidden",index!==surpriseIndex());$("answerLabel").textContent=mode==="answers"?"إجابتك":"توقعك";const dk=draftKey();$("answerInput").value=draftId===dk?(draftText??""):(saved[index]||"");$("prevBtn").disabled=index===0;$("nextBtn").textContent=index===19?"إنهاء المرحلة":"التالي";startQuestionTimer()}
+async function save(allowEmpty=false){let dk=draftKey();let v=(draftId===dk?(draftText??""):$("answerInput").value).trim();if(!allowEmpty&&!v)return false;let data={...(room[mine(mode)]||{}),[index]:v};busy=true;try{room=await rpc("save_game_progress",{p_code:room.code,p_token:token,p_kind:mode,p_data:data});if(draftId===dk){draftText=null;draftId=""}return true}catch(e){console.error(e);return false}finally{busy=false}}
+async function advanceAfterSave(){
+ if(index<19){index++;load();return}
+ await refresh(false);
+ if(mode==="answers"&&done("p1_answers")&&done("p2_answers")){mode="guesses";index=0;activeQuestionKey="";load()}
+ else if(mode==="guesses"&&done("p1_guesses")&&done("p2_guesses"))results();
+ else show("waiting");
+}
+
+$("nextBtn").onclick=async()=>{if(transitioning||busy)return;transitioning=true;clearQuestionTimer();if(!await save()){transitioning=false;activeQuestionKey="";startQuestionTimer();return}localStorage.removeItem(timerKey());await advanceAfterSave()};
+$("prevBtn").onclick=()=>{if(index>0&&!transitioning){clearQuestionTimer();activeQuestionKey="";index--;load()}};$("answerInput").addEventListener("input",()=>{draftId=draftKey();draftText=$("answerInput").value});
+function score(p){let g=room[`p${p}_guesses`]||{},a=room[`p${p===1?2:1}_answers`]||{},s=0;for(let i=0;i<20;i++)if(clean(g[i])&&clean(g[i])===clean(a[i]))s++;return s}
+function titleFor(n){if(n===20)return "أسطورة المعرفة 🏆";if(n>=16)return "خبير التفاصيل ✨";if(n>=11)return "يعرفك زين 🌟";if(n>=6)return "على الطريق 👣";return "بداية التعارف 🌱"}
+function addHistory(a,b){let key="qadak_history",arr=[];try{arr=JSON.parse(localStorage.getItem(key)||"[]")}catch(e){}if(arr.some(x=>x.code===room.code))return;arr.unshift({code:room.code,category:room.category,p1:room.p1_name,p2:room.p2_name,a,b,date:new Date().toLocaleDateString("ar-SA")});localStorage.setItem(key,JSON.stringify(arr.slice(0,30)))}
+function results(){clearQuestionTimer();activeQuestionKey="";if(poll)clearInterval(poll);show("results");let a=score(1),b=score(2),total=a+b,pct=Math.round(total/40*100);$("resultIntro").textContent=a===b?"تعادل! المنافسة بينكم متقاربة 🤝":(a>b?room.p1_name:room.p2_name)+" فاز/فازت هالجولة! 🎉";$("compatibility").textContent=pct+"%";$("totalPoints").textContent=total+" / 40";$("scoreGrid").innerHTML=`<div class="card"><div>${escapeHtml(room.p1_name)}</div><div class="score">${a}/20</div><div class="small">${escapeHtml(titleFor(a))}</div></div><div class="card"><div>${escapeHtml(room.p2_name)}</div><div class="score">${b}/20</div><div class="small">${escapeHtml(titleFor(b))}</div></div>`;$("awards").innerHTML=`<div class="card"><strong>🏅 ${escapeHtml(titleFor(a))}</strong><p class="small">${escapeHtml(room.p1_name)} · ${a} نقطة</p></div><div class="card"><strong>🏅 ${escapeHtml(titleFor(b))}</strong><p class="small">${escapeHtml(room.p2_name)} · ${b} نقطة</p></div>`;addHistory(a,b)}
+function escapeHtml(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function renderHistory(){let arr=[];try{arr=JSON.parse(localStorage.getItem("qadak_history")||"[]")}catch(e){};$("historyList").innerHTML=arr.length?arr.map(x=>`<div class="answerline"><strong>${escapeHtml(x.p1)} × ${escapeHtml(x.p2)}</strong><div class="small">${escapeHtml(x.category)} · ${escapeHtml(x.date)}</div><div>${x.a} - ${x.b} نقطة</div><div class="small">رمز الغرفة: ${escapeHtml(x.code)}</div></div>`).join(""):'<p class="small">ما فيه جولات محفوظة على هذا الجهاز للحين.</p>'}
+$("openHistory").onclick=()=>{renderHistory();show("history")};$("historyBack").onclick=()=>show("home");
+$("replayBtn").onclick=()=>{if(poll)clearInterval(poll);let lastCategory=room.category;category=lastCategory;let ownName=player===1?room.p1_name:room.p2_name;room=null;$("createName").value=ownName;$("joinName").value=ownName;$("chosenCategory").textContent=`التصنيف: ${category} · 20 سؤالًا`;token="";player=0;index=0;mode="answers";show("setup")};
+$("restartBtn").onclick=()=>{if(poll)clearInterval(poll);room=null;token="";player=0;index=0;show("home")};
+</script></body></html>
